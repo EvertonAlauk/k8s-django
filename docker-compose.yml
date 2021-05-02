@@ -1,0 +1,72 @@
+version: '3.7'
+services:
+  user:
+    #image: evertonalaauk/user:1.0.1
+    build: ./user
+    environment:
+      - SECRET_KEY=&jt&-yx)8pr=@_g0w908kt1hoyq6e#v3xcs)3-j_moab1xsgz(
+      - DATABASE_NAME=internet_banking
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=secret
+      - DATABASE_HOST=psql_db
+    depends_on:
+      - psql_db
+      - prometheus
+      - grafana
+    ports:
+      - 5001:5001
+    networks:
+      - internet_banking_network
+    volumes:
+      - ./user/:/usr/src/app
+    container_name: user
+
+  psql_db:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=internet_banking
+    networks:
+      - internet_banking_network
+    container_name: postgres
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - internet_banking_network
+    container_name: prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=user@gmail.com
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    user: "472"
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./monitoring/datasource.yml:/etc/grafana/provisioning/datasource.yml
+    networks:
+      - internet_banking_network
+    container_name: grafana
+
+networks:
+  internet_banking_network:
+    name: internet-banking-network
+    driver: bridge
+volumes:
+  prometheus:
+  postgres_data:
