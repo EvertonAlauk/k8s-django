@@ -1,4 +1,4 @@
 import os
 
 def test_app():
-    assert os.path.abspath(__file__) == "/usr/src/app/tests/test_app.py"
+    assert "tests/test_app.py" in os.path.abspath(__file__)
