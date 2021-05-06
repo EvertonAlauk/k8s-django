@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: credit-card
+  labels:
+    app: credit-card
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: credit-card
+  template:
+    metadata:
+      labels:
+        app: credit-card
+    spec:
+      containers:
+        - name: credit-card
+          image: evertonalaauk/credit_card:1.0.2
+          command: ["python", "manage.py", "runserver", "0.0.0.0:5003"]
+          ports:
+            - containerPort: 5003
+          envFrom:
+            - configMapRef:
+                name: credit-card-configmap
+          readinessProbe:
+              httpGet:
+                path: /health
+                port: 5003
+              initialDelaySeconds: 5
+              periodSeconds: 5
+          livenessProbe:
+              httpGet:
+                path: /health
+                port: 5003
+              initialDelaySeconds: 15
+              periodSeconds: 20
+          resources: {}

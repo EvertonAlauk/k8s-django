@@ -1,0 +1,29 @@
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MX0.BJIxZakotiCm41YfHpgTSIs3ZEhaF_0drPxxytJkgzU
+
+@ip_address=192.168.49.2
+
+###
+
+GET http://{{ip_address}}/credit_card/limit/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+POST http://{{ip_address}}/credit_card/limit/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "value": 500.00 // opcional
+}
+
+###
+
+PATCH http://{{ip_address}}/credit_card/limit/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "value": 800.00
+}

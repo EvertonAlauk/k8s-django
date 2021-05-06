@@ -1,8 +1,8 @@
 version: '3.7'
 services:
   user:
-    #image: evertonalaauk/user:1.0.1
     build: ./user
+    command: python manage.py runserver 0.0.0.0:5001
     environment:
       - SECRET_KEY=&jt&-yx)8pr=@_g0w908kt1hoyq6e#v3xcs)3-j_moab1xsgz(
       - DATABASE_NAME=internet_banking
@@ -20,6 +20,44 @@ services:
     volumes:
       - ./user/:/usr/src/app
     container_name: user
+
+  bank_account:
+    build: ./bank_account
+    command: python manage.py runserver 0.0.0.0:5002
+    environment:
+      - SECRET_KEY=&jt&-yx)8pr=@_g0w908kt1hoyq6e#v3xcs)3-j_moab1xsgz(
+      - DATABASE_NAME=internet_banking
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=secret
+      - DATABASE_HOST=psql_db
+    depends_on:
+      - psql_db
+    ports:
+      - 5002:5002
+    networks:
+      - internet_banking_network
+    volumes:
+      - ./bank_account/:/usr/src/app
+    container_name: bank_account
+
+  credit_card:
+    build: ./credit_card
+    command: python manage.py runserver 0.0.0.0:5003
+    environment:
+      - SECRET_KEY=&jt&-yx)8pr=@_g0w908kt1hoyq6e#v3xcs)3-j_moab1xsgz(
+      - DATABASE_NAME=internet_banking
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=secret
+      - DATABASE_HOST=psql_db
+    depends_on:
+      - psql_db
+    ports:
+      - 5003:5003
+    networks:
+      - internet_banking_network
+    volumes:
+      - ./credit_card/:/usr/src/app
+    container_name: credit_card
 
   psql_db:
     image: postgres:12-alpine
@@ -45,7 +83,7 @@ services:
     networks:
       - internet_banking_network
     container_name: prometheus
-
+    
   grafana:
     image: grafana/grafana:latest
     restart: always
@@ -68,5 +106,5 @@ networks:
     name: internet-banking-network
     driver: bridge
 volumes:
-  prometheus:
   postgres_data:
+  prometheus:

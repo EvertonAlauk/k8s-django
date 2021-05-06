@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-account
+  labels:
+    app: bank-account
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bank-account
+  template:
+    metadata:
+      labels:
+        app: bank-account
+    spec:
+      containers:
+        - name: bank-account
+          image: evertonalaauk/bank_account:2.0.7
+          command: ["python", "manage.py", "runserver", "0.0.0.0:5002"]
+          ports:
+            - containerPort: 5002
+          envFrom:
+            - configMapRef:
+                name: bank-account-configmap
+          readinessProbe:
+              httpGet:
+                path: /health
+                port: 5002
+              initialDelaySeconds: 5
+              periodSeconds: 5
+          livenessProbe:
+              httpGet:
+                path: /health
+                port: 5002
+              initialDelaySeconds: 15
+              periodSeconds: 20
+          resources: {}

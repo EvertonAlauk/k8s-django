@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-account-configmap
+  namespace: internet-banking
+data:
+  SECRET_KEY: '&jt&-yx)8pr=@_g0w908kt1hoyq6e#v3xcs)3-j_moab1xsgz('
+  DATABASE_NAME: internet_banking
+  DATABASE_USER: root
+  DATABASE_PASSWORD: secret
+  DATABASE_HOST: postgres-svc

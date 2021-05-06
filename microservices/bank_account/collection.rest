@@ -1,0 +1,80 @@
+
+
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MX0.BJIxZakotiCm41YfHpgTSIs3ZEhaF_0drPxxytJkgzU
+@ip_address=192.168.49.2
+
+###
+
+// ACCOUNT POST
+
+POST http://{{ip_address}}/bank_account/account/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+// ACCOUNT GET
+
+GET http://{{ip_address}}/bank_account/account/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+// BALANCE POST 
+
+POST http://{{ip_address}}/bank_account/balance/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+// BALANCE GET 
+
+GET http://{{ip_address}}/bank_account/balance/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+// BALANCE PATCH 
+
+PATCH http://{{ip_address}}/bank_account/balance/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "value": 1000.00
+}
+
+###
+
+// CREDIT 
+
+POST http://{{ip_address}}/bank_account/credit/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "value": 53.00
+}
+
+###
+
+// DEBIT 
+
+POST http://{{ip_address}}/bank_account/debit/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "value": 53.00
+}
+
+###
+
+// STATEMENT 
+
+GET http://{{ip_address}}/bank_account/statement/1/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
