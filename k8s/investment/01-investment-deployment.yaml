@@ -1,38 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user
+  name: investment
   labels:
-    app: user
+    app: investment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: user
+      app: investment
   template:
     metadata:
       labels:
-        app: user
+        app: investment
     spec:
       containers:
-        - name: user
-          image: evertonalaauk/user:2.0.5
-          command: ["python", "manage.py", "runserver", "0.0.0.0:5001"]
+        - name: investment
+          image: evertonalaauk/investment:1.0.0
+          command: ["python", "manage.py", "runserver", "0.0.0.0:5004"]
           ports:
-            - containerPort: 5001
+            - containerPort: 5004
           envFrom:
             - configMapRef:
-                name: user-configmap
+                name: investment-configmap
           readinessProbe:
               httpGet:
                 path: /health
-                port: 5001
+                port: 5004
               initialDelaySeconds: 5
               periodSeconds: 5
           livenessProbe:
               httpGet:
                 path: /health
-                port: 5001
+                port: 5004
               initialDelaySeconds: 15
               periodSeconds: 20
           resources: {}

@@ -29,3 +29,10 @@ spec:
             name: credit-card-svc
             port:
               number: 5003
+      - path: /investment
+        pathType: Prefix
+        backend:
+          service:
+            name: investment-svc
+            port:
+              number: 5004

@@ -4,6 +4,8 @@ metadata:
   name: grafana-datasources
   namespace: internet-banking
 data:
+  GF_SECURITY_ADMIN_USER: user@gmail.com
+  GF_SECURITY_ADMIN_PASSWORD: secret
   prometheus.yaml: |-
     {
         "apiVersion": 1,

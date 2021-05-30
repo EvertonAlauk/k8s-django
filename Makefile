@@ -11,14 +11,17 @@ kubernetes:
 	kubectl -n ${namespace} apply -f k8s/postgres
 	kubectl -n ${namespace} apply -f k8s/user
 	kubectl -n ${namespace} apply -f k8s/credit_card
+	kubectl -n ${namespace} apply -f k8s/investment
 	kubectl -n ${namespace} apply -f k8s/bank_account
 	kubectl -n ${namespace} apply -f k8s/prometheus
 	kubectl -n ${namespace} apply -f k8s/grafana
+	kubectl -n ${namespace} apply -f k8s/redis
 
 databases:
-	kubectl -n ${namespace} exec -it services/user-svc python manage.py migrate
-	kubectl -n ${namespace} exec -it services/bank-account-svc python manage.py migrate
-	kubectl -n ${namespace} exec -it services/credit-card-svc python manage.py migrate
+	kubectl -n ${namespace} exec -it services/user-svc -- python manage.py migrate
+	kubectl -n ${namespace} exec -it services/bank-account-svc -- python manage.py migrate
+	kubectl -n ${namespace} exec -it services/credit-card-svc -- python manage.py migrate
+	kubectl -n ${namespace} exec -it services/investment-svc -- python manage.py migrate
 
 kube-events:
 	kubectl -n ${namespace} get events
@@ -45,4 +48,7 @@ start-bank-account:
 	kubectl -n ${namespace} exec -it services/bank-account-svc -- /bin/bash
 
 start-credit-card:
+	kubectl -n ${namespace} exec -it services/credit-card-svc -- /bin/bash
+
+start-investment:
 	kubectl -n ${namespace} exec -it services/credit-card-svc -- /bin/bash

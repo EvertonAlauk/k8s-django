@@ -21,42 +21,25 @@ class HealthCheck(APIView):
 
 
 @method_decorator(token_required, name='dispatch')
-class LimitView(RetrieveAPIView, CreateAPIView):
-    queryset = Limit.objects.all()
-    lookup_field = 'id'
-    
-    def get(self, request, user_id, *args, **kwargs):
-        self.serializer_class = LimitSerializer
-        retrieved = self.retrieve(request, *args, **kwargs)
-        return Response(
-            status=status.HTTP_200_OK, data=retrieved.data)
-
-    def post(self, request, user_id, *args, **kwargs):
-        self.serializer_class = LimitCreateSerializer
-        created = self.create(request, *args, **kwargs)
-        return Response(
-            status=status.HTTP_200_OK, data=created.data)
-
-
-@method_decorator(token_required, name='dispatch')
 class LimitView(RetrieveUpdateAPIView, CreateAPIView):
     queryset = Limit.objects.all()
     lookup_field = 'id'
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return LimitCreateSerializer
+        elif self.request.method == "PATCH":
+            return LimitUpdateSerializer
+        return LimitSerializer
     
     def get(self, request, user_id, *args, **kwargs):
-        self.serializer_class = LimitSerializer
         retrieved = self.retrieve(request, *args, **kwargs)
-        return Response(
-            status=status.HTTP_200_OK, data=retrieved.data)
+        return Response(status=status.HTTP_200_OK, data=retrieved.data)
 
     def post(self, request, user_id, *args, **kwargs):
-        self.serializer_class = LimitCreateSerializer
         created = self.create(request, *args, **kwargs)
-        return Response(
-            status=status.HTTP_200_OK, data=created.data)
+        return Response(status=status.HTTP_200_OK, data=created.data)
     
     def patch(self, request, user_id, *args, **kwargs):
-        self.serializer_class = LimitUpdateSerializer
         updated = self.partial_update(request, *args, **kwargs)
-        return Response(
-            status=status.HTTP_200_OK, data=updated.data)
+        return Response(status=status.HTTP_200_OK, data=updated.data)

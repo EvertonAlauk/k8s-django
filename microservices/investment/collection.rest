@@ -1,0 +1,16 @@
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MX0.BJIxZakotiCm41YfHpgTSIs3ZEhaF_0drPxxytJkgzU
+
+@ip_address=127.0.0.1:5004
+
+###
+
+GET http://{{ip_address}}/investment/trade/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+GET http://{{ip_address}}/investment/1/balance/BTC/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
